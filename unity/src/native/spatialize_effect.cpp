@@ -786,6 +786,16 @@ public:
                               inChannels, inputAudio.interleavedBuffer, outChannels, outputAudio.interleavedBuffer);
         }
 
+		// Hack to compensate volume attenuation by steam audio
+		float compensateAttenuation = 1;
+		if (outChannels == 2)
+		{
+			compensateAttenuation = _compensateTwoChannels;
+		}
+		if (outChannels > 2)
+		{
+			compensateAttenuation = _compensateEightChannels;
+		}
         // Adjust the level of direct sound according to the user-specified parameter.
         for (auto i = 0u; i < outChannels * numSamples; ++i)
         {
@@ -795,7 +805,7 @@ public:
 
             level *= spatializerData->spatialblend;
 
-            outputAudio.interleavedBuffer[i] += level * mDirectSpatializedOutputBuffer.interleavedBuffer[i];
+            outputAudio.interleavedBuffer[i] += level * mDirectSpatializedOutputBuffer.interleavedBuffer[i] * compensateAttenuation;
         }
         mPreviousDirectMixLevel = directLevel;
 
@@ -971,6 +981,12 @@ private:
 
     /** Did we emit dry audio in the previous frame? */
     bool mBypassedInPreviousFrame;
+
+	// Volume attenuation compensation value for quad/5.0/5.1/7.1
+	const float _compensateEightChannels = 5.62341f;
+
+	// Volume attenuation compensation value for stereo
+	const float _compensateTwoChannels = 1.4142135623730950488016887242097f;
 
 public:
     /** Distance attenuation applied by Unity. */
