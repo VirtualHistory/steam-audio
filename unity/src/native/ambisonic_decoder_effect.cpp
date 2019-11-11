@@ -341,15 +341,15 @@ public:
 
         // Normalize the output so that an Ambisonics order 0 clip with peak magnitude 1 is comparable to an
         // unspatialized mono clip of peak magnitude 1.
-        const float kPi = 3.141592f; 
-        float scalar = 1.0f / sqrtf(4.0f * kPi);
-        for (unsigned int i = 0; i < numSamples * outChannels; i += outChannels)
-        {
-            for (int j = 0; j < ambisonicData->ambisonicOutChannels; ++j)
-            {
-                outBuffer[i + j] *= scalar;
-            }
-        }
+        //const float kPi = 3.141592f; 
+        //float scalar = 1.0f / sqrtf(4.0f * kPi);
+        //for (unsigned int i = 0; i < numSamples * outChannels; i += outChannels)
+        //{
+        //    for (int j = 0; j < ambisonicData->ambisonicOutChannels; ++j)
+        //    {
+        //        outBuffer[i + j] *= scalar;
+        //    }
+        //}
     }
 
 private:
