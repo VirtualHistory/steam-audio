@@ -423,6 +423,11 @@ UNITY_AUDIODSP_RESULT UNITY_AUDIODSP_CALLBACK processAmbisonicDecoder(UnityAudio
 {
 	//std::cout << "outChannels: " << outChannels << ". InChannels: " << inChannels << std::endl;
 	//std::cout << "AmbisonicsStateOutputChannels: " << state->ambisonicdata->ambisonicOutChannels << std::endl;
+	if (state->ambisonicdata->ambisonicOutChannels > 4)
+	{
+		outChannels = state->ambisonicdata->ambisonicOutChannels;
+		//std::cout << "outChannels: " << outChannels << std::endl;
+	}
     auto params = state->GetEffectData<AmbisonicDecoderState>();
 	std::cout << "numSamples: " << numSamples << std::endl;
 	std::cout << "frameSize: " << state->dspbuffersize << std::endl;
