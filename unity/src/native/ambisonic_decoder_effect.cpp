@@ -9,6 +9,7 @@
 #include <math.h>
 #include "environment_proxy.h"
 #include "auto_load_library.h"
+#include <iostream>
 
 /** Parameters that can be set by the user on an Ambisonics Decoder effect.
 */
@@ -243,6 +244,7 @@ public:
     void process(float* inBuffer, float* outBuffer, unsigned int numSamples, int inChannels, int outChannels,
         int samplingRate, int frameSize, unsigned int flags, UnityAudioAmbisonicData* ambisonicData)
     {
+		//std::cout << "Assert: " << (inChannels == outChannels) << std::endl;
         // Assume that the number of input and output channels are the same.
         assert(inChannels == outChannels);
 
@@ -268,6 +270,8 @@ public:
 
         // Binaural audio output format.
         auto binauralAmbisonicsFormat = audioFormatForNumChannels(ambisonicData->ambisonicOutChannels);
+		//std::cout << "SteamAudioFormat: " << binauralAmbisonicsFormat.channelLayout << std::endl;
+		//std::cout << "ambisonicsDataOutChannels: " << ambisonicData->ambisonicOutChannels << std::endl;
 
         // Intermediate format 1: convert input ambisonics audio from interleaved SN3D to deinterleaved SN3D
         IPLAudioFormat deinterleavedInputFormat = inputAmbisonicsFormat;
@@ -324,11 +328,13 @@ public:
         {
             gApi.iplApplyAmbisonicsBinauralEffect(mAmbisonicsBinauralEffect, mBinauralRenderer, deinterleavedN3DAudio,
                 binauralAmbisonicsAudio);
+			//std::cout << "Applying binaural efect." << std::endl;
         }
         else
         {
             gApi.iplApplyAmbisonicsPanningEffect(mAmbisonicsPanningEffect, mBinauralRenderer, deinterleavedN3DAudio,
                 binauralAmbisonicsAudio);
+			//std::cout << "Applying panning efect." << std::endl;
         }
 
         remapAmbisonicsToOutChannels(numSamples, ambisonicData->ambisonicOutChannels, outChannels, outBuffer);
@@ -415,7 +421,12 @@ UNITY_AUDIODSP_RESULT UNITY_AUDIODSP_CALLBACK releaseAmbisonicDecoder(UnityAudio
 UNITY_AUDIODSP_RESULT UNITY_AUDIODSP_CALLBACK processAmbisonicDecoder(UnityAudioEffectState* state, float* inBuffer,
     float* outBuffer, unsigned int numSamples, int inChannels, int outChannels)
 {
+	//std::cout << "outChannels: " << outChannels << ". InChannels: " << inChannels << std::endl;
+	//std::cout << "AmbisonicsStateOutputChannels: " << state->ambisonicdata->ambisonicOutChannels << std::endl;
     auto params = state->GetEffectData<AmbisonicDecoderState>();
+	std::cout << "numSamples: " << numSamples << std::endl;
+	std::cout << "frameSize: " << state->dspbuffersize << std::endl;
+
     params->process(inBuffer, outBuffer, numSamples, inChannels, outChannels, state->samplerate, state->dspbuffersize,
         state->flags, state->ambisonicdata);
     return UNITY_AUDIODSP_OK;
