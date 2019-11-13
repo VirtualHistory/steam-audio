@@ -229,9 +229,10 @@ public:
         // the in and out channel count. The ambisonicOutChannels field will be set to 2. In this common scenario, 
         // the plugin should output its spatialized data to the first 2 channels and zero out the other 2 channels.
 
+        int minChannels = std::min(ambisonicsChannels, outChannels);
         for (unsigned int sample = 0; sample < numSamples; ++sample)
         {
-            for (int channel = 0; channel < ambisonicsChannels; ++channel)
+            for (int channel = 0; channel < minChannels; ++channel)
             {
                 outBuffer[sample * outChannels + channel] = mBinauralAmbisonicsBuffer[sample * ambisonicsChannels + channel];
             }
@@ -337,9 +338,11 @@ public:
         // unspatialized mono clip of peak magnitude 1.
         const float kPi = 3.141592f; 
         float scalar = 1.0f / sqrtf(4.0f * kPi);
+        int minChannels = std::min(ambisonicData->ambisonicOutChannels, outChannels);
+
         for (unsigned int i = 0; i < numSamples * outChannels; i += outChannels)
         {
-            for (int j = 0; j < ambisonicData->ambisonicOutChannels; ++j)
+            for (int j = 0; j < minChannels; ++j)
             {
                 outBuffer[i + j] *= scalar;
             }
