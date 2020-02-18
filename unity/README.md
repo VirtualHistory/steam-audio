@@ -74,6 +74,8 @@ prerequisites as discussed below.
 Building the native plugin for Windows requires the following software:
 
 - Visual Studio 2015 (<https://www.visualstudio.com/vs/older-downloads/>)
+- Visual C++ Build Tools 2015
+- Windows SDK 8.1
 
 #### Build Instructions
 To build the plugin on Windows, run the following from a command prompt in the `unity` directory of the repository:
