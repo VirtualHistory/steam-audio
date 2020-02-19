@@ -1,7 +1,14 @@
-﻿unity/steamaudio_embree_*.zip
+﻿# Downloaded release files
+unity/steamaudio_embree_*.zip
 unity/steamaudio_radeonrays_*.zip
 unity/steamaudio_api_*.zip
 unity/steamaudio_tan_*.zip
+
+# Generated and built files
 unity/build/windows-vs2015-x64/.vs
 unity/build
 unity/bin
+
+# Generated, downloaded and extracted files of the unity integration
+!unity/src/project/SteamAudioUnity/**.meta
+unity/src/project/SteamAudioUnity/**
