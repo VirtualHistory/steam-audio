@@ -299,8 +299,8 @@ public:
         gApi.iplConvertAudioBufferFormat(deinterleavedInputAudio, deinterleavedN3DAudio);
 
         auto S = ambisonicData->sourcematrix;
-        IPLVector3 sourceUp = IPLVector3{ S[1], S[5] , S[9] };
-        IPLVector3 sourceAhead = IPLVector3{ S[2], S[9] , S[10] };
+        IPLVector3 sourceAhead = IPLVector3{ S[8], S[9], S[10] };
+        IPLVector3 sourceUp = IPLVector3{ S[4], S[5], S[6] };
 
         auto L = ambisonicData->listenermatrix; //Matrix that transforms source into the local space of the listener.
         auto ambisonicAheadX = L[0] * sourceAhead.x + L[4] * sourceAhead.y + L[8] * sourceAhead.z;
